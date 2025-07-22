@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Voto Verde - Seu Voto pela Legalização</title>
+    
+    <!-- Tailwind CSS para estilização rápida e responsiva -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Fonte Inter do Google Fonts para um visual moderno -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap" rel="stylesheet">
+    
+    <!-- Ícones da biblioteca Lucide -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <style>
+        /* Aplicando a fonte Inter como padrão */
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        /* Efeito de scroll suave */
+        html {
+            scroll-behavior: smooth;
+        }
+        /* Esconder a barra de rolagem do medidor de apoio */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800">
+
+    <!-- CABEÇALHO E NAVEGAÇÃO -->
+    <header class="bg-white/80 backdrop-blur-lg sticky top-0 z-50 shadow-sm">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="#" class="flex items-center space-x-2 text-2xl font-bold">
+                <span class="text-green-600"><i data-lucide="leaf"></i></span>
+                <h1>Voto Verde</h1>
+            </a>
+            <div class="hidden md:flex items-center space-x-6">
+                <a href="#candidatos" class="text-gray-600 hover:text-green-600 transition-colors">Candidatos</a>
+                <a href="#sobre" class="text-gray-600 hover:text-green-600 transition-colors">Sobre o Movimento</a>
+                <a href="#participe" class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-transform hover:scale-105 shadow">Seja Voluntário</a>
+            </div>
+            <button id="mobile-menu-button" class="md:hidden text-gray-800">
+                <i data-lucide="menu"></i>
+            </button>
+        </nav>
+        <!-- Menu Mobile -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white px-6 pb-4">
+            <a href="#candidatos" class="block py-2 text-gray-600 hover:text-green-600">Candidatos</a>
+            <a href="#sobre" class="block py-2 text-gray-600 hover:text-green-600">Sobre o Movimento</a>
+            <a href="#participe" class="block mt-2 bg-green-600 text-white text-center px-4 py-2 rounded-lg hover:bg-green-700 shadow">Seja Voluntário</a>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-6 py-12">
+
+        <!-- SEÇÃO PRINCIPAL (HERO) -->
+        <section class="text-center py-16">
+            <h2 class="text-5xl md:text-7xl font-black text-gray-900 leading-tight">
+                Seu voto pela <span class="text-green-600">legalização</span> começa aqui.
+            </h2>
+            <p class="mt-6 text-lg text-gray-600 max-w-3xl mx-auto">
+                Encontre candidatos comprometidos com a legalização da cannabis em todo o Brasil. Transforme sua escolha em poder político e ajude a construir um país mais livre, seguro e próspero.
+            </p>
+            <div class="mt-10 max-w-xl mx-auto">
+                <div class="relative">
+                    <input id="search-input" type="text" placeholder="Busque por nome, cidade, estado (SP) ou partido..." class="w-full p-4 pr-12 text-lg border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 outline-none transition">
+                    <i data-lucide="search" class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                </div>
+            </div>
+        </section>
+
+        <!-- SEÇÃO DE CANDIDATOS -->
+        <section id="candidatos" class="pt-20">
+            <div class="text-center mb-12">
+                <h3 class="text-4xl font-bold">Candidatos Voto Verde</h3>
+                <p class="text-gray-600 mt-2">Políticos que apoiam a causa e merecem seu voto.</p>
+            </div>
+            <div id="candidates-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Os cards dos candidatos serão inseridos aqui pelo JavaScript -->
+            </div>
+            <div id="no-results" class="hidden text-center py-16">
+                <i data-lucide="frown" class="mx-auto text-gray-400 h-16 w-16"></i>
+                <p class="mt-4 text-xl text-gray-600">Nenhum candidato encontrado com os termos da sua busca.</p>
+            </div>
+        </section>
+
+        <!-- SEÇÃO SOBRE O MOVIMENTO -->
+        <section id="sobre" class="pt-24 pb-16 bg-white my-24 rounded-2xl shadow-lg p-12">
+            <div class="grid md:grid-cols-2 gap-12 items-center">
+                <div>
+                    <span class="text-green-600 font-semibold">Nossa Missão</span>
+                    <h3 class="text-4xl font-bold mt-2">Mudar o Brasil, um voto de cada vez.</h3>
+                    <p class="mt-4 text-gray-600">
+                        O Movimento Voto Verde nasceu da frustração de ver o Brasil preso em uma "guerra às drogas" falida, que só gera violência, corrupção e impede o desenvolvimento de um mercado bilionário.
+                    </p>
+                    <p class="mt-4 text-gray-600">
+                        Nossa plataforma não movimenta dinheiro. Nós movimentamos informação. Identificamos e damos visibilidade a políticos que têm a coragem de defender a legalização, para que você possa votar com consciência e certeza. Acreditamos que a legalização é uma pauta de liberdade, economia e segurança pública.
+                    </p>
+                </div>
+                <div class="grid grid-cols-2 gap-6">
+                    <div class="bg-green-50 p-6 rounded-lg">
+                        <i data-lucide="line-chart" class="text-green-600 h-8 w-8"></i>
+                        <h4 class="font-bold mt-2">Economia</h4>
+                        <p class="text-sm text-gray-600">Geração de empregos, impostos e novas indústrias.</p>
+                    </div>
+                    <div class="bg-blue-50 p-6 rounded-lg">
+                        <i data-lucide="shield" class="text-blue-600 h-8 w-8"></i>
+                        <h4 class="font-bold mt-2">Segurança</h4>
+                        <p class="text-sm text-gray-600">Fim do financiamento do crime organizado.</p>
+                    </div>
+                    <div class="bg-yellow-50 p-6 rounded-lg">
+                        <i data-lucide="heart-pulse" class="text-yellow-600 h-8 w-8"></i>
+                        <h4 class="font-bold mt-2">Saúde</h4>
+                        <p class="text-sm text-gray-600">Acesso facilitado a tratamentos medicinais.</p>
+                    </div>
+                    <div class="bg-purple-50 p-6 rounded-lg">
+                        <i data-lucide="person-standing" class="text-purple-600 h-8 w-8"></i>
+                        <h4 class="font-bold mt-2">Liberdade</h4>
+                        <p class="text-sm text-gray-600">Direito do indivíduo sobre seu próprio corpo.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- SEÇÃO DE PARTICIPAÇÃO -->
+        <section id="participe" class="text-center py-20">
+             <h3 class="text-4xl font-bold">Faça Parte da Mudança</h3>
+             <p class="text-gray-600 mt-2 max-w-2xl mx-auto">A legalização não vai acontecer sozinha. Precisamos de voluntários para pesquisar, criar conteúdo e espalhar a palavra. Junte-se a nós.</p>
+             <div class="mt-8 max-w-lg mx-auto">
+                <form class="flex flex-col sm:flex-row gap-4">
+                    <input type="email" placeholder="Seu melhor e-mail" class="flex-grow p-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 outline-none transition">
+                    <button type="submit" class="bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700 transition-transform hover:scale-105 shadow font-semibold">Quero Ajudar</button>
+                </form>
+             </div>
+        </section>
+
+    </main>
+
+    <!-- RODAPÉ -->
+    <footer class="bg-gray-900 text-white">
+        <div class="container mx-auto px-6 py-12 text-center">
+            <p>&copy; 2025 Voto Verde. Todos os direitos reservados.</p>
+            <p class="text-sm text-gray-400 mt-2">Este é um movimento cívico de manifestação de pensamento e não possui afiliação partidária.</p>
+        </div>
+    </footer>
+
+    <script>
+        // --- BANCO DE DADOS INICIAL DOS CANDIDATOS (PARA O MVP) ---
+        // Em um projeto real, isso viria de um servidor/API.
+        const candidates = [
+            {
+                name: "Caio França",
+                party: "PSB",
+                state: "SP",
+                city: "São Vicente",
+                photo: "https://placehold.co/400x400/34D399/FFFFFF?text=CF",
+                supportLevel: 95, // Nível de apoio de 0 a 100
+                summary: "Autor da lei que garante cannabis medicinal pelo SUS em SP. Atuação focada e muito relevante na área da saúde.",
+                type: "Deputado Estadual"
+            },
+            {
+                name: "Renato Carioca (Exemplo)",
+                party: "PL",
+                state: "RJ",
+                city: "Rio de Janeiro",
+                photo: "https://placehold.co/400x400/60A5FA/FFFFFF?text=RC",
+                supportLevel: 60,
+                summary: "Votou a favor do PL 399/15 em comissões. Discreto, mas alinhado em votações importantes sobre o tema.",
+                type: "Deputado Federal"
+            },
+            {
+                name: "Maria da Silva (Exemplo)",
+                party: "PSOL",
+                state: "BA",
+                city: "Salvador",
+                photo: "https://placehold.co/400x400/FBBF24/FFFFFF?text=MS",
+                supportLevel: 100,
+                summary: "Defensora aberta da legalização completa para todos os fins, com propostas de reparação social.",
+                type: "Deputada Federal"
+            },
+            {
+                name: "João Pereira (Exemplo)",
+                party: "NOVO",
+                state: "MG",
+                city: "Belo Horizonte",
+                photo: "https://placehold.co/400x400/A78BFA/FFFFFF?text=JP",
+                supportLevel: 80,
+                summary: "Defende a legalização sob a ótica da liberdade de mercado e potencial de arrecadação de impostos.",
+                type: "Senador"
+            },
+            {
+                name: "Carlos Antunes (Exemplo)",
+                party: "MDB",
+                state: "RS",
+                city: "Porto Alegre",
+                photo: "https://placehold.co/400x400/F87171/FFFFFF?text=CA",
+                supportLevel: 40,
+                summary: "Posição ambígua. Demonstra interesse no potencial econômico do cânhamo industrial, mas é cético sobre o uso recreativo.",
+                type: "Deputado Estadual"
+            }
+        ];
+
+        // --- LÓGICA DO PROTÓTIPO ---
+
+        const candidatesList = document.getElementById('candidates-list');
+        const searchInput = document.getElementById('search-input');
+        const noResultsDiv = document.getElementById('no-results');
+        
+        // Função para renderizar os cards dos candidatos
+        function renderCandidates(filteredCandidates) {
+            candidatesList.innerHTML = ''; // Limpa a lista atual
+            
+            if (filteredCandidates.length === 0) {
+                noResultsDiv.classList.remove('hidden');
+            } else {
+                noResultsDiv.classList.add('hidden');
+            }
+
+            filteredCandidates.forEach(candidate => {
+                let supportColor = 'bg-red-500';
+                if (candidate.supportLevel >= 80) {
+                    supportColor = 'bg-green-500';
+                } else if (candidate.supportLevel >= 50) {
+                    supportColor = 'bg-yellow-500';
+                } else if (candidate.supportLevel >= 30) {
+                    supportColor = 'bg-orange-500';
+                }
+
+                const card = `
+                    <div class="bg-white rounded-2xl shadow-lg overflow-hidden transform hover:-translate-y-2 transition-transform duration-300">
+                        <div class="p-6">
+                            <div class="flex items-center space-x-4">
+                                <img src="${candidate.photo}" alt="Foto de ${candidate.name}" class="w-20 h-20 rounded-full border-4 border-gray-200 object-cover">
+                                <div>
+                                    <h4 class="text-xl font-bold">${candidate.name}</h4>
+                                    <p class="text-gray-500">${candidate.party} - ${candidate.state}</p>
+                                    <p class="text-sm text-gray-500">${candidate.type}</p>
+                                </div>
+                            </div>
+                            <div class="mt-4">
+                                <div class="flex justify-between items-center mb-1">
+                                    <span class="text-sm font-medium text-gray-600">Nível de Apoio</span>
+                                    <span class="text-sm font-bold ${supportColor.replace('bg-', 'text-')}">${candidate.supportLevel}%</span>
+                                </div>
+                                <div class="w-full bg-gray-200 rounded-full h-2.5">
+                                    <div class="${supportColor} h-2.5 rounded-full" style="width: ${candidate.supportLevel}%"></div>
+                                </div>
+                            </div>
+                            <p class="mt-4 text-gray-600 text-sm h-16">${candidate.summary}</p>
+                            <div class="mt-6 flex items-center justify-between">
+                                <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800">
+                                    <i data-lucide="leaf" class="w-4 h-4 mr-1.5"></i>
+                                    Selo Voto Verde
+                                </span>
+                                <a href="#" class="text-green-600 font-semibold hover:underline">Ver Perfil</a>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                candidatesList.innerHTML += card;
+            });
+            lucide.createIcons(); // Recria os ícones após adicionar novo HTML
+        }
+
+        // Função de busca
+        searchInput.addEventListener('keyup', (e) => {
+            const searchTerm = e.target.value.toLowerCase();
+            const filtered = candidates.filter(c => 
+                c.name.toLowerCase().includes(searchTerm) ||
+                c.state.toLowerCase().includes(searchTerm) ||
+                c.party.toLowerCase().includes(searchTerm) ||
+                (c.city && c.city.toLowerCase().includes(searchTerm)) // Adicionada busca por cidade
+            );
+            renderCandidates(filtered);
+        });
+        
+        // Lógica do menu mobile
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // Renderização inicial
+        window.onload = () => {
+            renderCandidates(candidates);
+            lucide.createIcons();
+        };
+
+    </script>
+</body>
+</html>
