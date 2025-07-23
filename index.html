@@ -72,9 +72,11 @@
                 Encontre candidatos comprometidos com a legalização da cannabis em todo o Brasil. Transforme sua escolha em poder político e ajude a construir um país mais livre, seguro e próspero.
             </p>
             <div class="mt-10 max-w-xl mx-auto">
-                <div class="relative">
-                    <input id="search-input" type="text" placeholder="Busque por nome, cidade, estado (SP) ou partido..." class="w-full p-4 pr-12 text-lg border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 outline-none transition">
+                <div id="search-container" class="relative">
+                    <input id="search-input" type="text" placeholder="Busque por nome, cidade, estado ou partido..." class="w-full p-4 pr-12 text-lg border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 outline-none transition">
                     <i data-lucide="search" class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                    <!-- Container do Autocomplete -->
+                    <div id="autocomplete-results" class="hidden absolute left-0 right-0 top-full mt-1 bg-white border border-gray-300 rounded-b-lg shadow-lg z-10 max-h-60 overflow-y-auto"></div>
                 </div>
             </div>
         </section>
@@ -156,7 +158,6 @@
 
     <script>
         // --- BANCO DE DADOS INICIAL DOS CANDIDATOS (PARA O MVP) ---
-        // Em um projeto real, isso viria de um servidor/API.
         const candidates = [
             {
                 name: "Caio França",
@@ -164,7 +165,7 @@
                 state: "SP",
                 city: "São Vicente",
                 photo: "https://placehold.co/400x400/34D399/FFFFFF?text=CF",
-                supportLevel: 95, // Nível de apoio de 0 a 100
+                supportLevel: 95,
                 summary: "Autor da lei que garante cannabis medicinal pelo SUS em SP. Atuação focada e muito relevante na área da saúde.",
                 type: "Deputado Estadual"
             },
@@ -215,26 +216,29 @@
         const candidatesList = document.getElementById('candidates-list');
         const searchInput = document.getElementById('search-input');
         const noResultsDiv = document.getElementById('no-results');
+        const autocompleteResults = document.getElementById('autocomplete-results');
+        const searchContainer = document.getElementById('search-container');
         
+        // Gera uma lista única de sugestões para o autocomplete, formatando a cidade
+        const allSuggestions = [...new Set(candidates.flatMap(c => {
+            const suggestions = [c.name, c.party, c.state];
+            if (c.city && c.state) {
+                suggestions.push(`${c.city} - ${c.state}`);
+            }
+            return suggestions.filter(Boolean); // filter(Boolean) remove entradas nulas/indefinidas
+        }))];
+
         // Função para renderizar os cards dos candidatos
         function renderCandidates(filteredCandidates) {
-            candidatesList.innerHTML = ''; // Limpa a lista atual
+            candidatesList.innerHTML = ''; 
             
-            if (filteredCandidates.length === 0) {
-                noResultsDiv.classList.remove('hidden');
-            } else {
-                noResultsDiv.classList.add('hidden');
-            }
+            noResultsDiv.classList.toggle('hidden', filteredCandidates.length > 0);
 
             filteredCandidates.forEach(candidate => {
                 let supportColor = 'bg-red-500';
-                if (candidate.supportLevel >= 80) {
-                    supportColor = 'bg-green-500';
-                } else if (candidate.supportLevel >= 50) {
-                    supportColor = 'bg-yellow-500';
-                } else if (candidate.supportLevel >= 30) {
-                    supportColor = 'bg-orange-500';
-                }
+                if (candidate.supportLevel >= 80) supportColor = 'bg-green-500';
+                else if (candidate.supportLevel >= 50) supportColor = 'bg-yellow-500';
+                else if (candidate.supportLevel >= 30) supportColor = 'bg-orange-500';
 
                 const card = `
                     <div class="bg-white rounded-2xl shadow-lg overflow-hidden transform hover:-translate-y-2 transition-transform duration-300">
@@ -269,20 +273,61 @@
                 `;
                 candidatesList.innerHTML += card;
             });
-            lucide.createIcons(); // Recria os ícones após adicionar novo HTML
+            lucide.createIcons();
+        }
+        
+        // Função para filtrar e exibir a lista principal de candidatos
+        function filterAndRender() {
+            const searchTerm = searchInput.value.toLowerCase();
+            const filtered = candidates.filter(c => {
+                const cityState = c.city ? `${c.city.toLowerCase()} - ${c.state.toLowerCase()}` : '';
+                return c.name.toLowerCase().includes(searchTerm) ||
+                       c.state.toLowerCase().includes(searchTerm) ||
+                       c.party.toLowerCase().includes(searchTerm) ||
+                       (c.city && c.city.toLowerCase().includes(searchTerm)) ||
+                       cityState.includes(searchTerm);
+            });
+            renderCandidates(filtered);
         }
 
-        // Função de busca
-        searchInput.addEventListener('keyup', (e) => {
-            const searchTerm = e.target.value.toLowerCase();
-            const filtered = candidates.filter(c => 
-                c.name.toLowerCase().includes(searchTerm) ||
-                c.state.toLowerCase().includes(searchTerm) ||
-                c.party.toLowerCase().includes(searchTerm) ||
-                (c.city && c.city.toLowerCase().includes(searchTerm)) // Adicionada busca por cidade
-            );
-            renderCandidates(filtered);
+        // --- Lógica do Autocomplete ---
+        searchInput.addEventListener('input', () => {
+            const term = searchInput.value.toLowerCase();
+            autocompleteResults.innerHTML = '';
+            if (term.length === 0) {
+                autocompleteResults.classList.add('hidden');
+                return;
+            }
+
+            const suggestions = allSuggestions.filter(s => s.toLowerCase().includes(term));
+            
+            if (suggestions.length > 0) {
+                suggestions.forEach(suggestion => {
+                    const item = document.createElement('div');
+                    item.className = 'p-2 hover:bg-gray-100 cursor-pointer';
+                    item.textContent = suggestion;
+                    item.addEventListener('click', () => {
+                        searchInput.value = suggestion;
+                        autocompleteResults.classList.add('hidden');
+                        filterAndRender(); // Filtra e renderiza a lista principal
+                    });
+                    autocompleteResults.appendChild(item);
+                });
+                autocompleteResults.classList.remove('hidden');
+            } else {
+                autocompleteResults.classList.add('hidden');
+            }
         });
+
+        // Fecha o autocomplete se o utilizador clicar fora
+        document.addEventListener('click', (e) => {
+            if (!searchContainer.contains(e.target)) {
+                autocompleteResults.classList.add('hidden');
+            }
+        });
+        
+        // Adiciona o evento de busca principal ao 'keyup' para funcionar com o autocomplete
+        searchInput.addEventListener('keyup', filterAndRender);
         
         // Lógica do menu mobile
         const mobileMenuButton = document.getElementById('mobile-menu-button');
