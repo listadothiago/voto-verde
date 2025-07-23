@@ -25,6 +25,10 @@
         html {
             scroll-behavior: smooth;
         }
+        /* Adiciona padding ao topo do body para não ficar atrás do header fixo */
+        body {
+            padding-top: 80px; /* Ajuste este valor conforme a altura do seu header */
+        }
         /* Esconder a barra de rolagem do medidor de apoio */
         .no-scrollbar::-webkit-scrollbar {
             display: none;
@@ -38,61 +42,48 @@
 <body class="bg-gray-50 text-gray-800">
 
     <!-- CABEÇALHO E NAVEGAÇÃO -->
-    <header class="bg-white/80 backdrop-blur-lg sticky top-0 z-50 shadow-sm">
-        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
-            <a href="#" class="flex items-center space-x-2 text-2xl font-bold">
-                <span class="text-green-600"><i data-lucide="leaf"></i></span>
-                <h1>Voto Verde</h1>
-            </a>
-            <div class="hidden md:flex items-center space-x-6">
-                <a href="#candidatos" class="text-gray-600 hover:text-green-600 transition-colors">Candidatos</a>
-                <a href="#sobre" class="text-gray-600 hover:text-green-600 transition-colors">Sobre o Movimento</a>
-                <a href="#participe" class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-transform hover:scale-105 shadow">Seja Voluntário</a>
+    <header class="bg-white/80 backdrop-blur-lg fixed top-0 left-0 right-0 z-50 shadow-sm">
+        <nav class="container mx-auto px-4 sm:px-6 py-3 flex justify-between items-center">
+            <div class="flex-shrink-0 flex items-center">
+                <a href="#" class="flex items-center space-x-2 text-xl md:text-2xl font-bold">
+                    <span class="text-green-600"><i data-lucide="leaf"></i></span>
+                    <h1 class="hidden sm:block">Voto Verde</h1>
+                </a>
+                <span class="hidden lg:block ml-4 pl-4 border-l border-gray-300 text-sm text-gray-500">Encontre candidatos pró-legalização.</span>
+            </div>
+            
+            <!-- Barra de Busca movida para o header -->
+            <div id="search-container" class="relative flex-grow max-w-xl mx-4">
+                <input id="search-input" type="text" placeholder="Busque por nome, cidade, estado..." class="w-full p-2 pl-10 text-base border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 outline-none transition">
+                <i data-lucide="search" class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5"></i>
+                <!-- Container do Autocomplete -->
+                <div id="autocomplete-results" class="hidden absolute left-0 right-0 top-full mt-1 bg-white border border-gray-300 rounded-b-lg shadow-lg z-20 max-h-60 overflow-y-auto"></div>
+            </div>
+
+            <div class="hidden md:flex items-center space-x-4">
+                <a href="#sobre" class="text-gray-600 hover:text-green-600 transition-colors">Sobre</a>
             </div>
             <button id="mobile-menu-button" class="md:hidden text-gray-800">
                 <i data-lucide="menu"></i>
             </button>
         </nav>
         <!-- Menu Mobile -->
-        <div id="mobile-menu" class="hidden md:hidden bg-white px-6 pb-4">
-            <a href="#candidatos" class="block py-2 text-gray-600 hover:text-green-600">Candidatos</a>
+        <div id="mobile-menu" class="hidden md:hidden bg-white px-6 pb-4 border-t border-gray-200">
             <a href="#sobre" class="block py-2 text-gray-600 hover:text-green-600">Sobre o Movimento</a>
-            <a href="#participe" class="block mt-2 bg-green-600 text-white text-center px-4 py-2 rounded-lg hover:bg-green-700 shadow">Seja Voluntário</a>
         </div>
     </header>
 
-    <main class="container mx-auto px-6 py-12">
-
-        <!-- SEÇÃO PRINCIPAL (HERO) -->
-        <section class="text-center py-16">
-            <h2 class="text-5xl md:text-7xl font-black text-gray-900 leading-tight">
-                Seu voto pela <span class="text-green-600">legalização</span> começa aqui.
-            </h2>
-            <p class="mt-6 text-lg text-gray-600 max-w-3xl mx-auto">
-                Encontre candidatos comprometidos com a legalização da cannabis em todo o Brasil. Transforme sua escolha em poder político e ajude a construir um país mais livre, seguro e próspero.
-            </p>
-            <div class="mt-10 max-w-xl mx-auto">
-                <div id="search-container" class="relative">
-                    <input id="search-input" type="text" placeholder="Busque por nome, cidade, estado ou partido..." class="w-full p-4 pr-12 text-lg border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 outline-none transition">
-                    <i data-lucide="search" class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
-                    <!-- Container do Autocomplete -->
-                    <div id="autocomplete-results" class="hidden absolute left-0 right-0 top-full mt-1 bg-white border border-gray-300 rounded-b-lg shadow-lg z-10 max-h-60 overflow-y-auto"></div>
-                </div>
-            </div>
-        </section>
+    <main class="container mx-auto px-6 py-8">
 
         <!-- SEÇÃO DE CANDIDATOS -->
-        <section id="candidatos" class="pt-20">
-            <div class="text-center mb-12">
-                <h3 class="text-4xl font-bold">Candidatos Voto Verde</h3>
-                <p class="text-gray-600 mt-2">Políticos que apoiam a causa e merecem seu voto.</p>
-            </div>
+        <section id="candidatos" class="pt-8">
             <div id="candidates-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 <!-- Os cards dos candidatos serão inseridos aqui pelo JavaScript -->
             </div>
             <div id="no-results" class="hidden text-center py-16">
                 <i data-lucide="frown" class="mx-auto text-gray-400 h-16 w-16"></i>
                 <p class="mt-4 text-xl text-gray-600">Nenhum candidato encontrado com os termos da sua busca.</p>
+                <p class="text-gray-500 mt-2">Tente buscar por outro nome, cidade ou estado.</p>
             </div>
         </section>
 
@@ -134,18 +125,6 @@
             </div>
         </section>
         
-        <!-- SEÇÃO DE PARTICIPAÇÃO -->
-        <section id="participe" class="text-center py-20">
-             <h3 class="text-4xl font-bold">Faça Parte da Mudança</h3>
-             <p class="text-gray-600 mt-2 max-w-2xl mx-auto">A legalização não vai acontecer sozinha. Precisamos de voluntários para pesquisar, criar conteúdo e espalhar a palavra. Junte-se a nós.</p>
-             <div class="mt-8 max-w-lg mx-auto">
-                <form class="flex flex-col sm:flex-row gap-4">
-                    <input type="email" placeholder="Seu melhor e-mail" class="flex-grow p-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 outline-none transition">
-                    <button type="submit" class="bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700 transition-transform hover:scale-105 shadow font-semibold">Quero Ajudar</button>
-                </form>
-             </div>
-        </section>
-
     </main>
 
     <!-- RODAPÉ -->
@@ -296,6 +275,7 @@
             autocompleteResults.innerHTML = '';
             if (term.length === 0) {
                 autocompleteResults.classList.add('hidden');
+                filterAndRender(); // Mostra todos os candidatos se a busca estiver vazia
                 return;
             }
 
