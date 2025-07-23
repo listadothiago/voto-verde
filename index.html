@@ -146,47 +146,63 @@
                 photo: "https://placehold.co/400x400/34D399/FFFFFF?text=CF",
                 supportLevel: 95,
                 summary: "Autor da lei que garante cannabis medicinal pelo SUS em SP. Atuação focada e muito relevante na área da saúde.",
-                type: "Deputado Estadual"
+                type: "Deputado Estadual",
+                officialSite: "https://www.al.sp.gov.br/deputado/?matricula=300552"
             },
             {
-                name: "Renato Carioca (Exemplo)",
-                party: "PL",
+                name: "Sâmia Bomfim",
+                party: "PSOL",
+                state: "SP",
+                city: "São Paulo",
+                photo: "https://placehold.co/400x400/FBBF24/FFFFFF?text=SB",
+                supportLevel: 100,
+                summary: "Defensora ativa da legalização ampla e da reforma da política de drogas. Crítica da 'guerra às drogas'.",
+                type: "Deputada Federal",
+                officialSite: "https://samiabomfim.com.br/"
+            },
+            {
+                name: "Glauber Braga",
+                party: "PSOL",
                 state: "RJ",
                 city: "Rio de Janeiro",
-                photo: "https://placehold.co/400x400/60A5FA/FFFFFF?text=RC",
-                supportLevel: 60,
-                summary: "Votou a favor do PL 399/15 em comissões. Discreto, mas alinhado em votações importantes sobre o tema.",
-                type: "Deputado Federal"
-            },
-            {
-                name: "Maria da Silva (Exemplo)",
-                party: "PSOL",
-                state: "BA",
-                city: "Salvador",
-                photo: "https://placehold.co/400x400/FBBF24/FFFFFF?text=MS",
+                photo: "https://placehold.co/400x400/F87171/FFFFFF?text=GB",
                 supportLevel: 100,
-                summary: "Defensora aberta da legalização completa para todos os fins, com propostas de reparação social.",
-                type: "Deputada Federal"
+                summary: "Posicionamento firme pela legalização de todas as drogas, argumentando pelo fim do encarceramento em massa.",
+                type: "Deputado Federal",
+                officialSite: "https://www.camara.leg.br/deputados/160589"
             },
             {
-                name: "João Pereira (Exemplo)",
-                party: "NOVO",
-                state: "MG",
-                city: "Belo Horizonte",
-                photo: "https://placehold.co/400x400/A78BFA/FFFFFF?text=JP",
-                supportLevel: 80,
-                summary: "Defende a legalização sob a ótica da liberdade de mercado e potencial de arrecadação de impostos.",
-                type: "Senador"
+                name: "Mara Gabrilli",
+                party: "PSD",
+                state: "SP",
+                city: "São Paulo",
+                photo: "https://placehold.co/400x400/60A5FA/FFFFFF?text=MG",
+                supportLevel: 90,
+                summary: "Grande defensora do uso medicinal da cannabis, com base em sua própria experiência. Foco na saúde e pesquisa.",
+                type: "Senadora",
+                officialSite: "https://www.maragabrilli.com.br/"
             },
             {
-                name: "Carlos Antunes (Exemplo)",
-                party: "MDB",
-                state: "RS",
-                city: "Porto Alegre",
-                photo: "https://placehold.co/400x400/F87171/FFFFFF?text=CA",
-                supportLevel: 40,
-                summary: "Posição ambígua. Demonstra interesse no potencial econômico do cânhamo industrial, mas é cético sobre o uso recreativo.",
-                type: "Deputado Estadual"
+                name: "Paulo Teixeira",
+                party: "PT",
+                state: "SP",
+                city: "São Paulo",
+                photo: "https://placehold.co/400x400/A78BFA/FFFFFF?text=PT",
+                supportLevel: 85,
+                summary: "Como ex-deputado e atual ministro, apoia a mudança na lei de drogas e o avanço do debate sobre a regulação.",
+                type: "Ministro (Ex-Deputado)",
+                officialSite: "https://www.gov.br/mdr/pt-br/acesso-a-informacao/institucional/quem-e-quem/paulo-teixeira"
+            },
+            {
+                name: "Marcelo Freixo",
+                party: "PT",
+                state: "RJ",
+                city: "Rio de Janeiro",
+                photo: "https://placehold.co/400x400/F472B6/FFFFFF?text=MF",
+                supportLevel: 95,
+                summary: "Defensor histórico da mudança na política de segurança pública, incluindo a regulação de drogas para combater o crime.",
+                type: "Presidente da Embratur",
+                officialSite: "https://www.gov.br/embratur/pt-br"
             }
         ];
 
@@ -198,19 +214,14 @@
         const autocompleteResults = document.getElementById('autocomplete-results');
         const searchContainer = document.getElementById('search-container');
         
-        // Gera uma lista única de sugestões para o autocomplete, formatando a cidade
         const allSuggestions = [...new Set(candidates.flatMap(c => {
             const suggestions = [c.name, c.party, c.state];
-            if (c.city && c.state) {
-                suggestions.push(`${c.city} - ${c.state}`);
-            }
-            return suggestions.filter(Boolean); // filter(Boolean) remove entradas nulas/indefinidas
+            if (c.city && c.state) suggestions.push(`${c.city} - ${c.state}`);
+            return suggestions.filter(Boolean);
         }))];
 
-        // Função para renderizar os cards dos candidatos
         function renderCandidates(filteredCandidates) {
             candidatesList.innerHTML = ''; 
-            
             noResultsDiv.classList.toggle('hidden', filteredCandidates.length > 0);
 
             filteredCandidates.forEach(candidate => {
@@ -219,9 +230,17 @@
                 else if (candidate.supportLevel >= 50) supportColor = 'bg-yellow-500';
                 else if (candidate.supportLevel >= 30) supportColor = 'bg-orange-500';
 
+                const googleNewsQuery = encodeURIComponent(`"${candidate.name}" "${candidate.party}"`);
+                const googleNewsUrl = `https://news.google.com/search?q=${googleNewsQuery}`;
+                
+                let officialSiteButton = '';
+                if (candidate.officialSite) {
+                    officialSiteButton = `<a href="${candidate.officialSite}" target="_blank" rel="noopener noreferrer" class="text-sm text-white bg-blue-500 hover:bg-blue-600 px-3 py-1 rounded-md transition-colors">Site Oficial</a>`;
+                }
+
                 const card = `
-                    <div class="bg-white rounded-2xl shadow-lg overflow-hidden transform hover:-translate-y-2 transition-transform duration-300">
-                        <div class="p-6">
+                    <div class="bg-white rounded-2xl shadow-lg overflow-hidden flex flex-col">
+                        <div class="p-6 flex-grow">
                             <div class="flex items-center space-x-4">
                                 <img src="${candidate.photo}" alt="Foto de ${candidate.name}" class="w-20 h-20 rounded-full border-4 border-gray-200 object-cover">
                                 <div>
@@ -240,12 +259,15 @@
                                 </div>
                             </div>
                             <p class="mt-4 text-gray-600 text-sm h-16">${candidate.summary}</p>
-                            <div class="mt-6 flex items-center justify-between">
-                                <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800">
-                                    <i data-lucide="leaf" class="w-4 h-4 mr-1.5"></i>
-                                    Selo Voto Verde
-                                </span>
-                                <a href="#" class="text-green-600 font-semibold hover:underline">Ver Perfil</a>
+                        </div>
+                        <div class="bg-gray-50 p-4 flex justify-between items-center">
+                            <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800">
+                                <i data-lucide="leaf" class="w-4 h-4 mr-1.5"></i>
+                                Selo Voto Verde
+                            </span>
+                            <div class="flex space-x-2">
+                                <a href="${googleNewsUrl}" target="_blank" rel="noopener noreferrer" class="text-sm text-white bg-gray-500 hover:bg-gray-600 px-3 py-1 rounded-md transition-colors">Ver Notícias</a>
+                                ${officialSiteButton}
                             </div>
                         </div>
                     </div>
@@ -255,7 +277,6 @@
             lucide.createIcons();
         }
         
-        // Função para filtrar e exibir a lista principal de candidatos
         function filterAndRender() {
             const searchTerm = searchInput.value.toLowerCase();
             const filtered = candidates.filter(c => {
@@ -269,18 +290,15 @@
             renderCandidates(filtered);
         }
 
-        // --- Lógica do Autocomplete ---
         searchInput.addEventListener('input', () => {
             const term = searchInput.value.toLowerCase();
             autocompleteResults.innerHTML = '';
             if (term.length === 0) {
                 autocompleteResults.classList.add('hidden');
-                filterAndRender(); // Mostra todos os candidatos se a busca estiver vazia
+                filterAndRender();
                 return;
             }
-
             const suggestions = allSuggestions.filter(s => s.toLowerCase().includes(term));
-            
             if (suggestions.length > 0) {
                 suggestions.forEach(suggestion => {
                     const item = document.createElement('div');
@@ -289,7 +307,7 @@
                     item.addEventListener('click', () => {
                         searchInput.value = suggestion;
                         autocompleteResults.classList.add('hidden');
-                        filterAndRender(); // Filtra e renderiza a lista principal
+                        filterAndRender();
                     });
                     autocompleteResults.appendChild(item);
                 });
@@ -299,24 +317,20 @@
             }
         });
 
-        // Fecha o autocomplete se o utilizador clicar fora
         document.addEventListener('click', (e) => {
             if (!searchContainer.contains(e.target)) {
                 autocompleteResults.classList.add('hidden');
             }
         });
         
-        // Adiciona o evento de busca principal ao 'keyup' para funcionar com o autocomplete
         searchInput.addEventListener('keyup', filterAndRender);
         
-        // Lógica do menu mobile
         const mobileMenuButton = document.getElementById('mobile-menu-button');
         const mobileMenu = document.getElementById('mobile-menu');
         mobileMenuButton.addEventListener('click', () => {
             mobileMenu.classList.toggle('hidden');
         });
 
-        // Renderização inicial
         window.onload = () => {
             renderCandidates(candidates);
             lucide.createIcons();
